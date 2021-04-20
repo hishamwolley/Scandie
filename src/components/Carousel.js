@@ -25,12 +25,26 @@ const Carousel = () => {
 				setPositionX(endX.current - startX.current + positionX);
 
 				if (endX.current - startX.current > 0) {
+					if (index.current - 1 < 0) {
+						// RESET TO END
+						setPositionX((items.length - 1) * -100);
+						index.current = items.length - 1;
+						drag.current = false;
+						return;
+					}
+					// CONTROL HOW MUCH A USER SCROLLS TILL AUTOMATIC LEFT SHIFT ( 40 )
 					if (endX.current - startX.current > 40) {
-						// CONTROL HOW MUCH A USER SCROLLS TILL AUTOMATIC LEFT SHIFT ( 40 )
 						drag.current = false;
 						index.current -= 1;
 					}
 				} else {
+					if (index.current >= items.length - 1) {
+						// RESET TO BEG
+						setPositionX(0);
+						drag.current = false;
+						index.current = 0;
+						return;
+					}
 					if (endX.current - startX.current < -40) {
 						// CONTROL HOW MUCH A USER SCROLLS TILL AUTOMATIC RIGHT SHIFT ( -40 )
 						drag.current = false;
@@ -54,6 +68,7 @@ const Carousel = () => {
 			setActiveIndex(index.current + 1);
 			index.current += 1;
 			setPositionX(positionX - 100);
+			drag.current = false;
 		}
 	};
 
@@ -69,6 +84,7 @@ const Carousel = () => {
 			setActiveIndex(index.current - 1);
 			index.current -= 1;
 			setPositionX(positionX + 100);
+			drag.current = false;
 		}
 	};
 
@@ -97,27 +113,11 @@ const Carousel = () => {
 			drag.current = false; // STOPS requestAnimationFrame
 			setGrabbing(false);
 			if (endX.current != 0 && endX.current - startX.current < 0) {
-				// RESET CAROUSEL ITEM TO BEG AFTER SCROLL PAST END
-				if (index.current - 1 === items.length - 1) {
-					index.current = 0;
-					setPositionX(0);
-					setActiveIndex(0);
-				} else {
-					// NEXT CAROUSEL ITEM MOUSE | TOUCH
-					setActiveIndex(index.current);
-					setPositionX(index.current * -100);
-				}
+				setActiveIndex(index.current);
+				setPositionX(index.current * -100);
 			} else if (endX.current != 0 && endX.current - startX.current > 0) {
-				if (index.current < 0) {
-					// RESET CAROUSEL ITEM TO END AFTER SCROLL PAST BEG
-					index.current = items.length - 1;
-					setActiveIndex(items.length - 1);
-					setPositionX((items.length - 1) * -100);
-				} else {
-					// PREVIOUS CAROUSEL ITEM MOUSE | TOUCH
-					setActiveIndex(index.current);
-					setPositionX(index.current * -100);
-				}
+				setActiveIndex(index.current);
+				setPositionX(index.current * -100);
 			}
 			// requestAnimationFrame cleanup
 			cancelAnimationFrame(animationId.current);
