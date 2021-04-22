@@ -4,7 +4,12 @@ import Carousel from "./components/Carousel";
 const App = () => {
 	return (
 		<>
-			<Carousel />
+			<Carousel>
+				<div style={{ background: "yellow", height: "100%" }}>
+					ScandieWeb is
+				</div>
+				<div style={{ color: "red" }}>Awesome</div>
+			</Carousel>
 		</>
 	);
 };

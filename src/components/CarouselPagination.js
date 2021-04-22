@@ -1,7 +1,7 @@
 import React from "react";
 
-const CarouselPagination = ({ items, activeIndex, paginationClick }) => {
-	return items.map((item, i) => {
+const CarouselPagination = ({ children, activeIndex, paginationClick }) => {
+	return children.map((child, i) => {
 		return (
 			<div
 				key={i}

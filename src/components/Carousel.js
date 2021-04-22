@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import CarouselItems from "./Carouseltems";
 import CarouselPagination from "./CarouselPagination";
-import { items } from "../items";
 
-const Carousel = () => {
+const Carousel = ({ children }) => {
 	const itemRef = useRef();
 	const [positionX, setPositionX] = useState(0);
 	const [activeIndex, setActiveIndex] = useState(0);
@@ -25,26 +24,12 @@ const Carousel = () => {
 				setPositionX(endX.current - startX.current + positionX);
 
 				if (endX.current - startX.current > 0) {
-					if (index.current - 1 < 0) {
-						// RESET TO END
-						setPositionX((items.length - 1) * -100);
-						index.current = items.length - 1;
-						drag.current = false;
-						return;
-					}
-					// CONTROL HOW MUCH A USER SCROLLS TILL AUTOMATIC LEFT SHIFT ( 40 )
 					if (endX.current - startX.current > 40) {
+						// CONTROL HOW MUCH A USER SCROLLS TILL AUTOMATIC LEFT SHIFT ( 40 )
 						drag.current = false;
 						index.current -= 1;
 					}
 				} else {
-					if (index.current >= items.length - 1) {
-						// RESET TO BEG
-						setPositionX(0);
-						drag.current = false;
-						index.current = 0;
-						return;
-					}
 					if (endX.current - startX.current < -40) {
 						// CONTROL HOW MUCH A USER SCROLLS TILL AUTOMATIC RIGHT SHIFT ( -40 )
 						drag.current = false;
@@ -57,7 +42,7 @@ const Carousel = () => {
 	};
 
 	const rightClick = () => {
-		if (index.current == items.length - 1) {
+		if (index.current == children.length - 1) {
 			// RESET CAROUSEL TO BEG USING BUTTON
 			index.current = 0;
 			setPositionX(0);
@@ -75,10 +60,10 @@ const Carousel = () => {
 	const leftClick = () => {
 		if (index.current - 1 < 0) {
 			// RESET CAROUSEL TO END USING BUTTON
-			index.current = items.length - 1;
-			setPositionX((items.length - 1) * -100);
+			index.current = children.length - 1;
+			setPositionX((children.length - 1) * -100);
 			drag.current = false;
-			setActiveIndex(items.length - 1);
+			setActiveIndex(children.length - 1);
 		} else {
 			// PREVIOUS CAROUSEL ITEM USING BUTTON
 			setActiveIndex(index.current - 1);
@@ -89,6 +74,7 @@ const Carousel = () => {
 	};
 
 	const paginationClick = (i) => {
+		console.log(i);
 		// CONTROL CAROUSEL POSITION
 		setActiveIndex(i);
 		index.current = i;
@@ -113,11 +99,27 @@ const Carousel = () => {
 			drag.current = false; // STOPS requestAnimationFrame
 			setGrabbing(false);
 			if (endX.current != 0 && endX.current - startX.current < 0) {
-				setActiveIndex(index.current);
-				setPositionX(index.current * -100);
+				// RESET CAROUSEL ITEM TO BEG AFTER SCROLL PAST END
+				if (index.current - 1 === children.length - 1) {
+					index.current = 0;
+					setPositionX(0);
+					setActiveIndex(0);
+				} else {
+					// NEXT CAROUSEL ITEM MOUSE | TOUCH
+					setActiveIndex(index.current);
+					setPositionX(index.current * -100);
+				}
 			} else if (endX.current != 0 && endX.current - startX.current > 0) {
-				setActiveIndex(index.current);
-				setPositionX(index.current * -100);
+				if (index.current < 0) {
+					// RESET CAROUSEL ITEM TO END AFTER SCROLL PAST BEG
+					index.current = children.length - 1;
+					setActiveIndex(children.length - 1);
+					setPositionX((children.length - 1) * -100);
+				} else {
+					// PREVIOUS CAROUSEL ITEM MOUSE | TOUCH
+					setActiveIndex(index.current);
+					setPositionX(index.current * -100);
+				}
 			}
 			// requestAnimationFrame cleanup
 			cancelAnimationFrame(animationId.current);
@@ -148,7 +150,7 @@ const Carousel = () => {
 			itemRef.current.removeEventListener("mouseleave", handleTouchEnd);
 			itemRef.current.removeEventListener("mousemove", handleTouchMove);
 		};
-	}, [positionX]);
+	}, [positionX, activeIndex]);
 
 	return (
 		<>
@@ -163,10 +165,10 @@ const Carousel = () => {
 				<div className="leftClickContainer">
 					<button onClick={leftClick}>←</button>
 				</div>
-				<CarouselItems items={items} positionX={positionX} />
+				<CarouselItems children={children} positionX={positionX} />
 				<div className="paginationContainer">
 					<CarouselPagination
-						items={items}
+						children={children}
 						paginationClick={paginationClick}
 						activeIndex={activeIndex}
 					/>
