@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
 	// File location bundle
@@ -10,6 +11,7 @@ module.exports = {
 	},
 	devServer: {
 		port: 3000,
+		contentBase: ["./public"],
 		watchContentBase: true,
 	},
 	module: {
@@ -21,15 +23,19 @@ module.exports = {
 					loader: "babel-loader",
 				},
 			},
-			{ test: /\.(png|jpe?g|gif)$/i, loader: "file-loader" },
 			{
 				test: /\.css$/,
 				use: [MiniCssExtractPlugin.loader, "css-loader"],
+			},
+			{
+				test: /\.svg$/,
+				use: ["@svgr/webpack", "url-loader"],
 			},
 		],
 	},
 	plugins: [
 		new MiniCssExtractPlugin(),
-		new HtmlWebpackPlugin({ template: "./src/index.html" }),
+		new HtmlWebpackPlugin({ template: "./public/index.html" }),
+		// new CopyWebpackPlugin([{ from: "public" }]),
 	],
 };

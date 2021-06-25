@@ -1,0 +1,237 @@
+@import url(https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap);
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-size: 16px;
+}
+
+canvas {
+	/* width: 50vw; */
+	/* height: 100vh;
+	margin: 0 auto; */
+}
+
+html,
+body {
+	font-family: "Noto Sans JP", Tahoma, Geneva, Verdana, sans-serif;
+	max-width: 100vw;
+	height: 3000px;
+	background-color: #fafafa;
+	overflow: hidden;
+}
+
+header {
+	display: flex;
+	align-items: center;
+	padding: 0 12.5%;
+	background-color: #fff;
+}
+
+header ul {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	list-style: none;
+}
+
+header ul li {
+	display: flex;
+	align-items: center;
+}
+
+header ul:first-child li:nth-child(3) {
+	height: 70%;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	border-left: 1px solid #d3d3d3;
+	border-right: 1px solid #d3d3d3;
+}
+
+header ul:last-child li:nth-child(2) a {
+	padding: 0.5rem 0.75rem;
+	border-radius: 5px;
+	box-shadow: 0px 1px 3px 2px rgba(0, 0, 0, 0.15);
+}
+
+.headerNav {
+	width: 100%;
+	height: 4.875rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.headerText {
+	text-decoration: none;
+	color: #464646;
+	margin-left: 0.75rem;
+	margin-right: 0.75rem;
+}
+
+.headerText:hover {
+	cursor: pointer;
+}
+
+.scrollProgressContainer1 {
+	position: relative;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.scrollProgressContainer2 {
+	width: 100%;
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+}
+
+.announcementClose:hover {
+	cursor: pointer;
+}
+
+.carouselContainer {
+	width: 100%;
+	display: flex;
+	height: 80vh;
+	overflow: hidden;
+	margin: 0 auto;
+	position: relative;
+}
+
+.carouselItem {
+	transition: 0.6s ease-out;
+	min-width: 100%;
+	user-select: none;
+}
+
+.carouselButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.paginationContainer {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	/* bottom: 2.5%; */
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	cursor: default;
+	height: 40px;
+	display: flex;
+	align-items: center;
+}
+
+.paginationClick {
+	cursor: pointer;
+	width: 1rem;
+	height: 1rem;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	transition: 0.6s ease-in-out;
+	border-radius: 50%;
+	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.leftClickContainer {
+	position: absolute;
+	z-index: 999;
+	top: 45%;
+	left: 50px;
+	cursor: default;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.rightClickContainer {
+	position: absolute;
+	z-index: 999;
+	top: 45%;
+	right: 50px;
+	cursor: default;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+button {
+	height: 50px;
+	width: 50px;
+	border-radius: 5px;
+	border-width: 0;
+
+	cursor: pointer;
+	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+	* {
+		font-size: 20px;
+	}
+
+	.headerNav ul li:first-child {
+		margin-bottom: 1rem;
+	}
+
+	.headerText {
+		display: block;
+		min-width: 135px;
+	}
+	.leftClickContainer {
+		display: none;
+	}
+
+	.rightClickContainer {
+		display: none;
+	}
+	header {
+		display: block;
+		height: 0;
+		padding: 0;
+	}
+
+	.headerNav {
+		background-color: white;
+		box-shadow: 1px 0px 20px 0.5px gray;
+		padding-top: 2rem;
+		flex-direction: column;
+		justify-content: flex-start;
+		position: fixed;
+		height: 100vh;
+		left: 0;
+		top: 0;
+		z-index: 9999;
+		background-color: white;
+	}
+
+	header ul {
+		text-align: center;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	header ul li {
+		margin: 0.5rem 0;
+		display: block;
+	}
+
+	header ul:first-child li:nth-child(3) {
+		border-left: none;
+		border-right: none;
+		padding-top: 0rem;
+		padding-bottom: 0rem;
+	}
+}
+
+@media only screen and (min-width: 1366px) {
+	* {
+		font-size: 18px;
+	}
+}
